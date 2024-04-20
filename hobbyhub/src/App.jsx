@@ -28,13 +28,15 @@ function App() {
 
   async function uploadImage(event) {
     const file = event.target.files[0];
+    console.log(file);
     const { data, error } = await supabase
       .storage
       .from('images')
-      .upload('public/' + file.name + '-' + uuidv4(), file);
+      .upload('public/' + file.name + '_' + uuidv4().toString() + '.jpg', file);
     if (error) {
-      console.log(error)
+      console.log(error);
     } else {
+      console.log("UPLOADED");
       getImages();
     }
   }
