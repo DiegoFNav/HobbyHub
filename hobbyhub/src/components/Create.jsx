@@ -54,7 +54,7 @@ function Create() {
   return (
     <> 
       <Container align="center" className="container-sm mt-4">
-        <h1>Welcome to the page!</h1>
+        <h1>Create Post</h1>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" style={{ maxWidth: "500px" }}>
             <Form.Control type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />

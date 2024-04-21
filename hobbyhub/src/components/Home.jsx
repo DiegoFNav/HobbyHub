@@ -26,17 +26,55 @@ function Home() {
   }, []);
 
   const handleCardClick = (id) => {
-    navigate(`/post/${id}`); // Navigate to the post page with the post ID as URL parameter
+    navigate(`/post/${id}`);
+  };
+
+  const handleSortByNewest = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error sorting posts by newest:', error.message);
+      } else {
+        setPosts(data);
+      }
+    } catch (error) {
+      console.error('Error sorting posts by newest:', error.message);
+    }
+  };
+
+  const handleSortByMostPopular = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('upvotes', { ascending: false });
+
+      if (error) {
+        console.error('Error sorting posts by most popular:', error.message);
+      } else {
+        setPosts(data);
+      }
+    } catch (error) {
+      console.error('Error sorting posts by most popular:', error.message);
+    }
   };
 
   return (
     <div className="home_container">
-      <h1>Home</h1>
+      <div className="sorting_buttons">
+        <h3>Order By</h3>
+        <Button variant="primary" onClick={handleSortByNewest}>Newest</Button>
+        <Button variant="primary" onClick={handleSortByMostPopular}>Most Popular</Button>
+      </div>
         {posts.map(post => (
           <div
           key={post.id}
           className="home_card"
-          onClick={() => handleCardClick(post.id)} // Handle click event on the card
+          onClick={() => handleCardClick(post.id)}
         >
           <h6>Posted on {new Date(post.created_at).toLocaleDateString('en-US', {
               month: 'long',

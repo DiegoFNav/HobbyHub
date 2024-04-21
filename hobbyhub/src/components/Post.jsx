@@ -92,6 +92,10 @@ function Post() {
     }
   };
 
+  const handleEditPost = () => {
+    navigate(`/update/${id}`);
+  };
+
   return (
     <div className="home_container">
       {post && (
@@ -116,7 +120,7 @@ function Post() {
                 <p>{upvotes} Upvotes</p>
               </div>
               <div className="right">
-                <button className="card_button"><img src="/edit.png" alt="" /></button>
+                <button className="card_button" onClick={handleEditPost}><img src="/edit.png" alt="" /></button>
                 <button className="card_button" onClick={handleDeletePost}><img src="/delete.png" alt="" /></button>
               </div>
             </div>

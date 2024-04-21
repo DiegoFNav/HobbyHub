@@ -68,6 +68,7 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: #58acf4;
+  margin: 10px;
 }
 
 .home_card:hover {
@@ -137,4 +138,25 @@
   background-color: #105edd;
   border-radius: 15px;
   margin-bottom: 1rem;
+}
+
+.update_card {
+  width: 45rem;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 2rem;
+  background-color: white;
+}
+
+.sorting_buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+.sorting_buttons Button {
+  margin: 0.5rem;
 }
