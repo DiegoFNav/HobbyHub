@@ -9,7 +9,7 @@ function App() {
     <div className='main_container'>
       <div className='nav_bar'>
         <div className='left'>
-          <img className='logo' src="logo.png" alt="" />
+          <img className='logo' src="/logo.png" alt="" />
         </div>
         <div className='right'>
           <h2><Link to="/home">Home</Link></h2>
