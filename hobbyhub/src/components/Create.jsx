@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Form, Button, Container } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { v4 as uuidv4 } from 'uuid';
 
 
 function Create() {
   const supabase = useSupabaseClient();
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
@@ -45,6 +47,7 @@ function Create() {
       setTitle('');
       setImage(null);
       setContent('');
+      navigate('/');
     }
   }
 

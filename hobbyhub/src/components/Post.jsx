@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useNavigate } from "react-router-dom";
 
 function Post() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [upvotes, setUpvotes] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
   const supabase = useSupabaseClient();
+  const navigate = useNavigate();
 
   const fetchPost = async () => {
     try {
@@ -21,6 +25,7 @@ function Post() {
       } else { 
         setPost(data);
         setUpvotes(data.upvotes);
+        setComments(data.comments);
       }
     } catch (error) {
       console.error("Error fetching post:", error.message);
@@ -33,7 +38,6 @@ function Post() {
 
   const handleUpvote = async () => {
     try {
-      console.log(upvotes);
       const { data, error } = await supabase
         .from("posts")
         .update({ upvotes: upvotes + 1 })
@@ -48,9 +52,48 @@ function Post() {
     }
   };
 
+  const handleAddComment = async () => {
+    try {
+      if (!newComment) {
+        alert("Please provide a comment.");
+        return;
+      }
+      console.log(newComment);
+      const { data, error } = await supabase
+        .from("posts")
+        .update({ comments: [...comments, newComment ] })
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setNewComment('');
+    } catch (error) {
+      console.error("Error adding comment:", error.message);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      const { error } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        throw error;
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error("Error deleting post:", error.message);
+    }
+  };
+
   return (
     <div className="home_container">
-      <h1>Post</h1>
       {post && (
         <div className="card">
           <h6>Posted on {new Date(post.created_at).toLocaleDateString('en-US', {
@@ -69,17 +112,21 @@ function Post() {
           <div className="card-content">
             <div className="card-row">
               <div className="left test">
-                <button className="card_button" onClick={handleUpvote}><img src="/like.jpg" alt="" /></button>
+                <button className="card_button" onClick={handleUpvote}><img src="/like.png" alt="" /></button>
                 <p>{upvotes} Upvotes</p>
               </div>
               <div className="right">
                 <button className="card_button"><img src="/edit.png" alt="" /></button>
-                <button className="card_button"><img src="/delete.png" alt="" /></button>
+                <button className="card_button" onClick={handleDeletePost}><img src="/delete.png" alt="" /></button>
               </div>
             </div>
+            <div>
+              <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+              <button className="comment_button" onClick={handleAddComment}>Add Comment</button>
+            </div>
             <h5>Comments:</h5>
-              {post.comments.map(comment => (
-                <p key={comment.id}>{comment.text}</p>
+            {comments.map((comment, index) => (
+                <p key={index}>{comment}</p>
             ))}   
           </div>
         </div>
