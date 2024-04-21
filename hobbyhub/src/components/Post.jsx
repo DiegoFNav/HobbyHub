@@ -107,12 +107,14 @@ function Post() {
               })}</h6>
           <h5 className="card_title">{post.title}</h5>
           <p>{post.content}</p>
-          <div className="card-img-container">
-            <img
-              src={post.image_url}
-              className="card-image"
-            />
-          </div>
+          {post.image_url &&
+            <div className="card-img-container">
+              <img
+                src={post.image_url}
+                className="card-image"
+              />
+            </div>
+          }
           <div className="card-content">
             <div className="card-row">
               <div className="left test">
@@ -125,7 +127,7 @@ function Post() {
               </div>
             </div>
             <div>
-              <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+              <input type="text" placeholder="Enter Comment here" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
               <button className="comment_button" onClick={handleAddComment}>Add Comment</button>
             </div>
             <h5>Comments:</h5>
